@@ -5,6 +5,7 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
 
 ## Features
  - API documented using Swagger
+   - Access locally at: http://localhost:8080
 
 ## Todo
 The following is a list of items (prioritized from most important to least important):
