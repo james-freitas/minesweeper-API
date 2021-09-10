@@ -35,12 +35,5 @@ gradle.taskGraph.whenReady {
 		}
 }
 
-//task copyToLib(type: Copy) {
-//	into "$buildDir/libs"
-//	from(configurations.)
-//}
-//
-//stage.dependsOn(copyToLib)
-
 task stage(dependsOn: ['build', 'clean'])
 build.mustRunAfter clean
