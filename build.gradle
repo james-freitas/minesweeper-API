@@ -28,45 +28,19 @@ test {
 
 // Heroku configurations
 
-//jar {
-//	manifest {
-//		attributes(
-//				'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' '),
-//				'Main-Class': 'com.codeonblue.minesweeper.MinesweeperApplication'
-//		)
-//	}
-//}
-
-jar {
-	doFirst {
-		manifest {
-
-			attributes(
-					'Class-Path': configurations.runtimeClasspath.files.collect{it.toURI().toString()}.join(' '),
-					'Main-Class': 'com.codeonblue.minesweeper.MinesweeperApplication')
+gradle.taskGraph.whenReady {
+	taskGraph ->
+		if (taskGraph.hasTask(stage)) {
+			test.enabled = false
 		}
-
-	}
 }
 
-//tasks.withType(Jar::class) {
-//	manifest {
-//		attributes["Manifest-Version"] = "1.0"
-//		attributes["Main-Class"] = "com.codeonblue.minesweeper.MinesweeperApplication"
-//	}
+//task copyToLib(type: Copy) {
+//	into "$buildDir/libs"
+//	from(configurations.)
 //}
+//
+//stage.dependsOn(copyToLib)
 
-task stage(type: Copy, dependsOn: [clean, build]) {
-	from jar.getArchiveFile()
-	into project.rootDir
-	rename {
-		'app.jar'
-	}
-}
-stage.mustRunAfter(clean)
-
-clean {
-	doLast {
-		project.file('app.jar').delete()
-	}
-}
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
