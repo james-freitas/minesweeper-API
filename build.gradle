@@ -28,17 +28,33 @@ test {
 
 // Heroku configurations
 
+//jar {
+//	manifest {
+//		attributes(
+//				'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' '),
+//				'Main-Class': 'com.codeonblue.minesweeper.MinesweeperApplication'
+//		)
+//	}
+//}
+
 jar {
 	doFirst {
 		manifest {
-			if (!configurations.compile.isEmpty()) {
-				attributes(
-						'Class-Path': configurations.compile.collect{it.toURI().toString()}.join(' '),
-						'Main-Class': 'com.codeonblue.minesweeper.MinesweeperApplication')
-			}
+
+			attributes(
+					'Class-Path': configurations.runtimeClasspath.files.collect{it.toURI().toString()}.join(' '),
+					'Main-Class': 'com.codeonblue.minesweeper.MinesweeperApplication')
 		}
+
 	}
 }
+
+//tasks.withType(Jar::class) {
+//	manifest {
+//		attributes["Manifest-Version"] = "1.0"
+//		attributes["Main-Class"] = "com.codeonblue.minesweeper.MinesweeperApplication"
+//	}
+//}
 
 task stage(type: Copy, dependsOn: [clean, build]) {
 	from jar.getArchiveFile()
