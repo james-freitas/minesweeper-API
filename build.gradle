@@ -29,11 +29,14 @@ test {
 // Heroku configurations
 
 jar {
-	manifest {
-		attributes(
-				'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' '),
-				'Main-Class': 'com.codeonblue.minesweeper.MinesweeperApplication'
-		)
+	doFirst {
+		manifest {
+			if (!configurations.compile.isEmpty()) {
+				attributes(
+						'Class-Path': configurations.compile.collect{it.toURI().toString()}.join(' '),
+						'Main-Class': 'com.codeonblue.minesweeper.MinesweeperApplication')
+			}
+		}
 	}
 }
 
