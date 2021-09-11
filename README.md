@@ -7,6 +7,9 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
  - API documented using Swagger
    - Access locally at http://localhost:8080 or in Heroku at: https://minesweep-api.herokuapp.com/
 
+## Misc
+ - A scheduler was added to health check the application on a 20-minute basis in order to avoid hibernation
+
 ## Todo
 The following is a list of items (prioritized from most important to least important):
 * Design and implement  a documented RESTful API for the game (think of a mobile app for your API)
