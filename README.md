@@ -7,8 +7,16 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
  - API documented using Swagger
    - Access locally at http://localhost:8080 or in Heroku at: https://minesweep-api.herokuapp.com/
 
+## Run application locally
+ - Add the following environment variable
+ ```bash
+ APPLICATION_BASE_URL=http://localhost:8080
+ ```
+
 ## Misc
  - A scheduler was added to health check the application on a 20-minute basis in order to avoid hibernation
+
+
 
 ## Todo
 The following is a list of items (prioritized from most important to least important):
