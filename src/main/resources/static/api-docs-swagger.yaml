@@ -13,7 +13,7 @@ paths:
       description: Creates a new MineSweeper game
       operationId: createGame
       responses:
-        200:
+        201:
           description: Game created successfully
           content:
             application/json:
