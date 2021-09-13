@@ -5,6 +5,7 @@ info:
   description: API used for the MineSweeper game
   version: 1.0.0
 paths:
+
   /games:
     post:
       tags:
@@ -18,7 +19,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GameResponse"
+                $ref: "#/components/schemas/CreatedGameResponse"
               example:
                 gameId: 3160c9de-b152-4886-ae52-41f670c493e9
         405:
@@ -27,12 +28,64 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MethodNotAllowedErrorResponse"
+
+  /games/{gameId}/cells/{cellId}/reveal:
+    post:
+      tags:
+        - Game
+      summary: Reveal the content of a cell
+      description: Reveal the content of a cell in a MineSweeper game
+      operationId: revealCell
+      parameters:
+        - name: gameId
+          in: path
+          description: Id of the minesweeper game
+          required: true
+          schema:
+            type: integer
+        - name: cellId
+          in: path
+          description: Id of the cell in a minesweeper game
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Cell(s) revealed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CellRevealedResponse"
+        405:
+          description: Method not allowed error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MethodNotAllowedErrorResponse"
+
 components:
   schemas:
-    GameResponse:
+    CellRevealedResponse:
       type: object
       properties:
-        backupId:
+        revealedCells:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/RevealedCells'
+          example:
+            10: 1
+            33: 4
+    RevealedCells:
+      type: object
+      properties:
+        id:
+          type: integer
+        value:
+          type: integer
+    CreatedGameResponse:
+      type: object
+      properties:
+        gameId:
           type: string
           description: Game id
           example: "3160c9de-b152-4886-ae52-41f670c493e9"

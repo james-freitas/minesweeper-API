@@ -1,6 +1,7 @@
 package com.codeonblue.minesweeper.controller;
 
 
+import com.codeonblue.minesweeper.dto.CellRevealedResponse;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,4 +39,24 @@ class GameControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.gameId").isNotEmpty());
     }
+
+    @Test
+    @DisplayName("Should return revealed cells in an existent game")
+    void shouldReturnAllRevealedCells() throws Exception {
+
+        final CellRevealedResponse revealedResponse = generateCellRevealedResponse();
+
+        mockMvc.perform(post("/games/3160c9de-b152-4886-ae52-41f670c493e9/cells/1/reveal")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.revealedCells").isNotEmpty());
+    }
+
+    private CellRevealedResponse generateCellRevealedResponse() {
+        final CellRevealedResponse cellRevealedResponse = new CellRevealedResponse();
+        cellRevealedResponse.setRevealedCells(new HashMap<>());
+        return cellRevealedResponse;
+    }
+
 }
