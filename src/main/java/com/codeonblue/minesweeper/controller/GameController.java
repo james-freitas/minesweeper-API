@@ -5,7 +5,6 @@ import com.codeonblue.minesweeper.dto.CellStatus;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
 import com.codeonblue.minesweeper.dto.MarkCellRequest;
 import com.codeonblue.minesweeper.dto.MarkCellResponse;
-import javafx.scene.control.Cell;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

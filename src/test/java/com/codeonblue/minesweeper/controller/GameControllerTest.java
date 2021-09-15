@@ -5,7 +5,6 @@ import com.codeonblue.minesweeper.dto.CellRevealedResponse;
 import com.codeonblue.minesweeper.dto.CellStatus;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
 import com.codeonblue.minesweeper.dto.MarkCellRequest;
-import com.codeonblue.minesweeper.dto.MarkCellResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -99,4 +98,6 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.cellStatus").isNotEmpty())
                 .andExpect(jsonPath("$.cellStatus").value("QUESTION_MARK"));
     }
+
+    // TODO: Update swagger
 }
