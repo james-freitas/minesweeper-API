@@ -27,7 +27,7 @@ public class GameController {
     @PostMapping("/games/{gameId}/cells/{cellId}/reveal")
     public ResponseEntity<CellRevealedResponse> getRevealedCells() {
         final Map<String, Integer> revealedCells = new HashMap<>();
-        revealedCells.put("1",1);
+        revealedCells.put("1", 1);
         final CellRevealedResponse cellRevealedResponse = new CellRevealedResponse();
         cellRevealedResponse.setRevealedCells(revealedCells);
         return new ResponseEntity<>(cellRevealedResponse, HttpStatus.OK);
@@ -37,7 +37,7 @@ public class GameController {
     public ResponseEntity<MarkCellResponse> markCell(@RequestBody MarkCellRequest markCellRequest) {
         CellStatus cellStatus;
 
-        switch (markCellRequest.getCurrentStatus()) {
+        switch (markCellRequest.getCellCurrentStatus()) {
             case UNCHECKED: cellStatus = CellStatus.FLAGGED;
                 break;
             case FLAGGED: cellStatus = CellStatus.QUESTION_MARK;
@@ -45,7 +45,7 @@ public class GameController {
             case QUESTION_MARK: cellStatus = CellStatus.UNCHECKED;
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + markCellRequest.getCurrentStatus());
+                throw new IllegalStateException("Unexpected value: " + markCellRequest.getCellCurrentStatus());
         }
 
         final MarkCellResponse markCellResponse = new MarkCellResponse(cellStatus);

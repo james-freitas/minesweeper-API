@@ -1,18 +1,8 @@
 package com.codeonblue.minesweeper.dto;
 
-public class MarkCellResponse {
+public class MarkCellResponse extends MarkCellDto {
 
-    private CellStatus cellStatus;
+    public MarkCellResponse() {}
 
-    public MarkCellResponse(CellStatus cellStatus) {
-        this.cellStatus = cellStatus;
-    }
-
-    public CellStatus getCellStatus() {
-        return cellStatus;
-    }
-
-    public void setCellStatus(CellStatus cellStatus) {
-        this.cellStatus = cellStatus;
-    }
+    public MarkCellResponse(CellStatus cellCurrentStatus) { super(cellCurrentStatus); }
 }

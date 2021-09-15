@@ -78,8 +78,8 @@ class GameControllerTest {
                 .content(cellStatusInput))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cellStatus").isNotEmpty())
-                .andExpect(jsonPath("$.cellStatus").value("FLAGGED"));
+                .andExpect(jsonPath("$.cellCurrentStatus").isNotEmpty())
+                .andExpect(jsonPath("$.cellCurrentStatus").value("FLAGGED"));
     }
 
     @Test
@@ -95,8 +95,25 @@ class GameControllerTest {
                 .content(cellStatusInput))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cellStatus").isNotEmpty())
-                .andExpect(jsonPath("$.cellStatus").value("QUESTION_MARK"));
+                .andExpect(jsonPath("$.cellCurrentStatus").isNotEmpty())
+                .andExpect(jsonPath("$.cellCurrentStatus").value("QUESTION_MARK"));
+    }
+
+    @Test
+    @DisplayName("Should mark cell as UNCHECKED when current status is QUESTION_MARK in existent game")
+    void shouldMarkCellAsUnchecked() throws Exception {
+
+        final MarkCellRequest markCellRequest = new MarkCellRequest(CellStatus.QUESTION_MARK);
+
+        final String cellStatusInput = objectMapper.writeValueAsString(markCellRequest);
+
+        mockMvc.perform(post("/games/3160c9de-b152-4886-ae52-41f670c493e9/cells/1/mark")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(cellStatusInput))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cellCurrentStatus").isNotEmpty())
+                .andExpect(jsonPath("$.cellCurrentStatus").value("UNCHECKED"));
     }
 
     // TODO: Update swagger

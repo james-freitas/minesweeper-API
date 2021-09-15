@@ -62,9 +62,62 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MethodNotAllowedErrorResponse"
-
+  /games/{gameId}/cells/{cellId}/mark:
+    post:
+      tags:
+        - Game
+      summary: Marks a cell
+      description: Marks a cell, changing it status in a MineSweeper game
+      operationId: markCell
+      parameters:
+        - name: gameId
+          in: path
+          description: Id of the minesweeper game
+          required: true
+          schema:
+            type: integer
+        - name: cellId
+          in: path
+          description: Id of the cell in a minesweeper game
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Mark cell request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarkCellRequest'
+      responses:
+        200:
+          description: Cell marked successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarkCellResponse"
+        405:
+          description: Method not allowed error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MethodNotAllowedErrorResponse"
 components:
   schemas:
+    MarkCellRequest:
+      type: object
+      properties:
+        currentCellStatus:
+          type: string
+          description: Current cell status
+          example: "UNCHECKED"
+    MarkCellResponse:
+      type: object
+      properties:
+        currentCellStatus:
+          type: string
+          description: Current cell status
+          example: "FLAGGED"
     CellRevealedResponse:
       type: object
       properties:
