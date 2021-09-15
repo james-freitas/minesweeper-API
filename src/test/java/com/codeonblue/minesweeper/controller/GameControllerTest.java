@@ -2,7 +2,11 @@ package com.codeonblue.minesweeper.controller;
 
 
 import com.codeonblue.minesweeper.dto.CellRevealedResponse;
+import com.codeonblue.minesweeper.dto.CellStatus;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
+import com.codeonblue.minesweeper.dto.MarkCellRequest;
+import com.codeonblue.minesweeper.dto.MarkCellResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,9 @@ class GameControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("Should create a game and return the game id")
@@ -59,4 +66,37 @@ class GameControllerTest {
         return cellRevealedResponse;
     }
 
+    @Test
+    @DisplayName("Should mark cell as FLAGGED when current status is UNCHECKED in existent game")
+    void shouldMarkCellAsFlagged() throws Exception {
+
+        final MarkCellRequest markCellRequest = new MarkCellRequest(CellStatus.UNCHECKED);
+
+        final String cellStatusInput = objectMapper.writeValueAsString(markCellRequest);
+
+        mockMvc.perform(post("/games/3160c9de-b152-4886-ae52-41f670c493e9/cells/1/mark")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(cellStatusInput))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cellStatus").isNotEmpty())
+                .andExpect(jsonPath("$.cellStatus").value("FLAGGED"));
+    }
+
+    @Test
+    @DisplayName("Should mark cell as QUESTION_MARK when current status is FLAGGED in existent game")
+    void shouldMarkCellAsQuestionMark() throws Exception {
+
+        final MarkCellRequest markCellRequest = new MarkCellRequest(CellStatus.FLAGGED);
+
+        final String cellStatusInput = objectMapper.writeValueAsString(markCellRequest);
+
+        mockMvc.perform(post("/games/3160c9de-b152-4886-ae52-41f670c493e9/cells/1/mark")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(cellStatusInput))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cellStatus").isNotEmpty())
+                .andExpect(jsonPath("$.cellStatus").value("QUESTION_MARK"));
+    }
 }
