@@ -115,6 +115,4 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.cellCurrentStatus").isNotEmpty())
                 .andExpect(jsonPath("$.cellCurrentStatus").value("UNCHECKED"));
     }
-
-    // TODO: Update swagger
 }

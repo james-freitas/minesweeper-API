@@ -5,7 +5,7 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
 
 ## Features
  - API documented using Swagger
-   - Access locally at http://localhost:8080 or in Heroku at: https://minesweep-api.herokuapp.com/
+   - Access locally at http://localhost:8080 or in Heroku at https://minesweep-api.herokuapp.com/
 
 ## Run application locally
  - Add the following environment variable
@@ -21,7 +21,9 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
 ## Todo
 The following is a list of items (prioritized from most important to least important):
 * Design and implement  a documented RESTful API for the game (think of a mobile app for your API)
+
 * Implement an API client library for the API designed above. Ideally, in a different language, of your preference, to the one used for the API
+
 * When a cell with no adjacent mines is revealed, all adjacent squares will be revealed (and repeat)
 * Ability to 'flag' a cell with a question mark or red flag
 * Detect when game is over
