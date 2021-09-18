@@ -2,7 +2,6 @@ package com.codeonblue.minesweeper.controller;
 
 
 import com.codeonblue.minesweeper.dto.CellRevealedResponse;
-import com.codeonblue.minesweeper.dto.CellStatus;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
 import com.codeonblue.minesweeper.dto.MarkCellRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,7 +68,7 @@ class GameControllerTest {
     @DisplayName("Should mark cell as FLAGGED when current status is UNCHECKED in existent game")
     void shouldMarkCellAsFlagged() throws Exception {
 
-        final MarkCellRequest markCellRequest = new MarkCellRequest(CellStatus.UNCHECKED);
+        final MarkCellRequest markCellRequest = new MarkCellRequest("UNCHECKED");
 
         final String cellStatusInput = objectMapper.writeValueAsString(markCellRequest);
 
@@ -86,7 +85,7 @@ class GameControllerTest {
     @DisplayName("Should mark cell as QUESTION_MARK when current status is FLAGGED in existent game")
     void shouldMarkCellAsQuestionMark() throws Exception {
 
-        final MarkCellRequest markCellRequest = new MarkCellRequest(CellStatus.FLAGGED);
+        final MarkCellRequest markCellRequest = new MarkCellRequest("FLAGGED");
 
         final String cellStatusInput = objectMapper.writeValueAsString(markCellRequest);
 
@@ -103,7 +102,7 @@ class GameControllerTest {
     @DisplayName("Should mark cell as UNCHECKED when current status is QUESTION_MARK in existent game")
     void shouldMarkCellAsUnchecked() throws Exception {
 
-        final MarkCellRequest markCellRequest = new MarkCellRequest(CellStatus.QUESTION_MARK);
+        final MarkCellRequest markCellRequest = new MarkCellRequest("QUESTION_MARK");
 
         final String cellStatusInput = objectMapper.writeValueAsString(markCellRequest);
 

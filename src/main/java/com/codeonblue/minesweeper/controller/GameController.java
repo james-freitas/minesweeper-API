@@ -7,6 +7,7 @@ import com.codeonblue.minesweeper.dto.MarkCellRequest;
 import com.codeonblue.minesweeper.dto.MarkCellResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,10 @@ public class GameController {
     }
 
     @PostMapping("/games/{gameId}/cells/{cellId}/reveal")
-    public ResponseEntity<CellRevealedResponse> getRevealedCells() {
+    public ResponseEntity<CellRevealedResponse> getRevealedCells(
+            @PathVariable String gameId,
+            @PathVariable String cellId
+    ) {
         final Map<String, Integer> revealedCells = new HashMap<>();
         revealedCells.put("1", 1);
         final CellRevealedResponse cellRevealedResponse = new CellRevealedResponse();
@@ -34,15 +38,19 @@ public class GameController {
     }
 
     @PostMapping("/games/{gameId}/cells/{cellId}/mark")
-    public ResponseEntity<MarkCellResponse> markCell(@RequestBody MarkCellRequest markCellRequest) {
+    public ResponseEntity<MarkCellResponse> markCell(
+            @PathVariable String gameId,
+            @PathVariable String cellId,
+            @RequestBody MarkCellRequest markCellRequest
+    ) {
         CellStatus cellStatus;
 
         switch (markCellRequest.getCellCurrentStatus()) {
-            case UNCHECKED: cellStatus = CellStatus.FLAGGED;
+            case "UNCHECKED": cellStatus = CellStatus.FLAGGED;
                 break;
-            case FLAGGED: cellStatus = CellStatus.QUESTION_MARK;
+            case "FLAGGED": cellStatus = CellStatus.QUESTION_MARK;
                 break;
-            case QUESTION_MARK: cellStatus = CellStatus.UNCHECKED;
+            case "QUESTION_MARK": cellStatus = CellStatus.UNCHECKED;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + markCellRequest.getCellCurrentStatus());
