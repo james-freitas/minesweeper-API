@@ -6,7 +6,7 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
 ## Features
  - API documented using Swagger
    - Access locally at http://localhost:8080 or in Heroku at https://minesweep-api.herokuapp.com/
-
+ - API client library for the API can be found at: [Minesweeper client](https://github.com/james-freitas/minesweeper-client)
 ## Run application locally
  - Add the following environment variable
  ```bash
