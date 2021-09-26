@@ -4,18 +4,23 @@ package com.codeonblue.minesweeper.controller;
 import com.codeonblue.minesweeper.dto.CellRevealedResponse;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
 import com.codeonblue.minesweeper.dto.MarkCellRequest;
+import com.codeonblue.minesweeper.service.GameService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
 import java.util.UUID;
 
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,17 +37,24 @@ class GameControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean
+    private GameService gameService;
+
     @Test
     @DisplayName("Should create a game and return the game id")
     void shouldCreateMineSweeperGameAndReturnGameId() throws Exception {
 
         final CreatedGameResponse createdGameResponse = new CreatedGameResponse(UUID.randomUUID());
 
+        given(gameService.createGame()).willReturn(createdGameResponse);
+
         mockMvc.perform(post("/games")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.gameId").isNotEmpty());
+
+        verify(gameService, times(1)).createGame();
     }
 
     @Test

@@ -5,6 +5,7 @@ import com.codeonblue.minesweeper.dto.CellStatus;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
 import com.codeonblue.minesweeper.dto.MarkCellRequest;
 import com.codeonblue.minesweeper.dto.MarkCellResponse;
+import com.codeonblue.minesweeper.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 public class GameController {
 
+    private final GameService gameService;
+
+    public GameController(GameService gameService) {
+        this.gameService = gameService;
+    }
+
     @PostMapping("/games")
     public ResponseEntity<CreatedGameResponse> createGame() {
-        final CreatedGameResponse createdGameResponse = new CreatedGameResponse(UUID.randomUUID());
+        final CreatedGameResponse createdGameResponse = gameService.createGame();
         return new ResponseEntity<>(createdGameResponse, HttpStatus.CREATED);
     }
 

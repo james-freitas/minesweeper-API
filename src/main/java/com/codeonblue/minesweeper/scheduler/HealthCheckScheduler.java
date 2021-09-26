@@ -20,7 +20,7 @@ public class HealthCheckScheduler {
         fixedRate is the time in milliseconds between calls
         20 minutes is 1_200_000
     */
-    @Scheduled(fixedRate = 1_200_000)
+    @Scheduled(fixedRate = 3_600_000)
     public void scheduleHealthCheck() {
 
         final String url = baseUrl + "/actuator/health";
