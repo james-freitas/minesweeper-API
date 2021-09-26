@@ -6,101 +6,150 @@ public class Game {
 
     private static final int CELLS_TOTAL = 9;
     private static final int CELLS_PER_ROW = (int) Math.sqrt(CELLS_TOTAL);
-    private static final int BOMBS_TOTAL = 3;
 
     public Cell[] getCells() {
         return cells;
     }
 
-    public boolean[] getBombs() {
-        return bombs;
-    }
-
     private Cell[] cells = new Cell[CELLS_TOTAL];
-    private boolean[] bombs = new boolean[BOMBS_TOTAL];
 
-    /*
-      2    2x   2x
-      2    2x   3
-      1    1    1
-    */
-
-    public Game() { }
-
-    public Game(Cell[] bombCells) {
-        this.cells = bombCells;
-
+    public Game() {
+        fillBombs();
         fillAdjacentBombCells();
     }
 
-
+    public Game(Cell[] bombCells) {
+        this.cells = bombCells;
+        fillAdjacentBombCells();
+    }
+    
     private void fillAdjacentBombCells() {
         for (int i = 0; i < CELLS_TOTAL; i++) {
-            if (cells[i].hasBomb() && isUpperRow(i) && isLeftCol(i) && !cells[i + 1].hasBomb()) {
-                cells[i + 1].incNearBombs();
+            if (cells[i].hasBomb()) {
+
+                markAdjacentUpperLeftCells(i);
+
+                markAdjacentUpperRightCells(i);
+
+                if (isUpperRow(i) && !isLeftCol(i) && !isRightCol(i)) {
+                    cells[i - 1].incNearBombs();
+                    cells[i + 1].incNearBombs();
+                    cells[i + CELLS_PER_ROW - 1].incNearBombs();
+                    cells[i + CELLS_PER_ROW].incNearBombs();
+                    cells[i + CELLS_PER_ROW + 1].incNearBombs();
+                }
+                if (!isUpperRow(i) && isLeftCol(i) && !isBottomRow(i)) {
+                    cells[CELLS_PER_ROW - i].incNearBombs();
+                    cells[CELLS_PER_ROW - i + 1].incNearBombs();
+                    cells[i + 1].incNearBombs();
+                    cells[i + CELLS_PER_ROW].incNearBombs();
+                    cells[i + CELLS_PER_ROW + 1].incNearBombs();
+                }
+                
+                markAdjacentNotBoarderCells(i);
+                
+                if (!isUpperRow(i) && !isLeftCol(i) && isRightCol(i) && !isBottomRow(i)) {
+                    cells[i - CELLS_PER_ROW - 1].incNearBombs();
+                    cells[i - CELLS_PER_ROW].incNearBombs();
+                    cells[i - 1].incNearBombs();
+                    cells[i + CELLS_PER_ROW - 1].incNearBombs();
+                    cells[i + CELLS_PER_ROW].incNearBombs();
+                }
+
+                markAdjacentBottomLeftCells(i);
+
+                markAdjacentBottomCells(i);
+
+                markAdjacentBottomRightCells(i);
             }
-//            if (cells[i].hasBomb() && isUpperRow(i) && isRightCol(i) && !cells[i + 1].hasBomb()) {
-//                cells[i + 1].incNearBombs();
-//            }
+        }
+        clearBombCountingOnBombCells();
+    }
+
+    private void markAdjacentBottomCells(int i) {
+        if (isBottomRow(i) && !isLeftCol(i) && !isRightCol(i)) {
+            cells[i - CELLS_PER_ROW - 1].incNearBombs();
+            cells[i - CELLS_PER_ROW].incNearBombs();
+            cells[i - CELLS_PER_ROW + 1].incNearBombs();
+            cells[i - 1].incNearBombs();
+            cells[i + 1].incNearBombs();
         }
     }
 
+    private void markAdjacentNotBoarderCells(int i) {
+        if (!isUpperRow(i) && !isLeftCol(i) && !isRightCol(i) && !isBottomRow(i)) {
+            cells[i - CELLS_PER_ROW - 1].incNearBombs();
+            cells[i - CELLS_PER_ROW].incNearBombs();
+            cells[i - CELLS_PER_ROW + 1].incNearBombs();
+            cells[i - 1].incNearBombs();
+            cells[i + 1].incNearBombs();
+            cells[i + CELLS_PER_ROW - 1].incNearBombs();
+            cells[i + CELLS_PER_ROW].incNearBombs();
+            cells[i + CELLS_PER_ROW + 1].incNearBombs();
+        }
+    }
 
+    private void markAdjacentBottomRightCells(int i) {
+        if (isBottomRow(i) && isRightCol(i)) {
+            cells[i - CELLS_PER_ROW - 1].incNearBombs();
+            cells[i - CELLS_PER_ROW].incNearBombs();
+            cells[i - 1].incNearBombs();
+        }
+    }
+
+    private void markAdjacentBottomLeftCells(int i) {
+        if (isBottomRow(i) && isLeftCol(i)) {
+            cells[i - CELLS_PER_ROW].incNearBombs();
+            cells[i - CELLS_PER_ROW + 1].incNearBombs();
+            cells[i + 1].incNearBombs();
+        }
+    }
+
+    private void markAdjacentUpperRightCells(int i) {
+        if (isUpperRow(i) && isRightCol(i)) {
+            cells[i - 1].incNearBombs();
+            cells[i + CELLS_PER_ROW - 1].incNearBombs();
+            cells[i + CELLS_PER_ROW].incNearBombs();
+        }
+    }
+
+    private void markAdjacentUpperLeftCells(int i) {
+        if (isUpperRow(i) && isLeftCol(i)) {
+            cells[i + 1].incNearBombs();
+            cells[i + CELLS_PER_ROW].incNearBombs();
+            cells[i + CELLS_PER_ROW + 1].incNearBombs();
+        }
+    }
+
+    private void clearBombCountingOnBombCells() {
+        for (int i = 0; i < CELLS_TOTAL - 1; i++) {
+            if (cells[i].hasBomb()) {
+                cells[i].clearNearBombsCounter();
+            }
+        }
+    }
 
     private void fillBombs() {
-
+        
+        Random random = new Random();
+        int bombsAdded = 0;
+        
         for (int i = 0; i < CELLS_TOTAL; i++) {
-            if (i == 1 || i == 2 || i == 4) {
+            if (shouldFillBomb(random) && bombsAdded < CELLS_PER_ROW) {
                 cells[i] = new Cell(true, i, 0);
+                bombsAdded++;
             } else {
                 cells[i] = new Cell(false, i, 0);
             }
         }
-
-//        for (int i = 0; i < CELLS_TOTAL; i++) {
-//            if (cells[i].hasBomb()) {
-//                if (!isUpperRow(i) && !isLeftCol(i) && !cells[i - CELLS_PER_ROW - 1].hasBomb()) {
-//                    cells[i - CELLS_PER_ROW - 1].incNearBombs();
-//                }
-//
-//                if (!isUpperRow(i) && !cells[i - CELLS_PER_ROW].hasBomb()) {
-//                    cells[i - CELLS_PER_ROW].incNearBombs();
-//                }
-//
-//                if (!isUpperRow(i) && !isRightCol(i) && !cells[i - CELLS_PER_ROW + 1].hasBomb()) {
-//                    cells[i - CELLS_PER_ROW + 1].incNearBombs();
-//                }
-//
-//                if (!isLeftCol(i) && !cells[i - 1].hasBomb()) {
-//                    cells[i - 1].incNearBombs();
-//                }
-//
-//                if (!isRightCol(i) && !cells[i + 1].hasBomb()) {
-//                    cells[i + 1].incNearBombs();
-//                }
-//
-//                if (!isBottomRow(i) && !isLeftCol(i) && !cells[i + CELLS_PER_ROW - 1].hasBomb()) {
-//                    cells[i + CELLS_PER_ROW - 1].incNearBombs();
-//                }
-//
-//                if (!isBottomRow(i) && !cells[i + CELLS_PER_ROW].hasBomb()) {
-//                    cells[i + CELLS_PER_ROW].incNearBombs();
-//                }
-//
-//                if (!isBottomRow(i) && !isRightCol(i) && !cells[i + CELLS_PER_ROW + 1].hasBomb()) {
-//                    cells[i + CELLS_PER_ROW + 1].incNearBombs();
-//                }
-//            }
-//        }
-
     }
 
     private boolean isBottomRow(int position) {
-        return position < CELLS_TOTAL - CELLS_PER_ROW;
+        return CELLS_TOTAL - position <= CELLS_PER_ROW;
     }
 
     private boolean isRightCol(int position) {
-        return (position + 1) % CELLS_TOTAL == 0;
+        return (position + 1) % CELLS_PER_ROW == 0;
     }
 
     private boolean isLeftCol(int position) {
@@ -110,17 +159,8 @@ public class Game {
     private boolean isUpperRow(int position) {
         return position < CELLS_PER_ROW;
     }
-
-    private boolean isBombNear(int position) {
-        return position < CELLS_TOTAL - CELLS_PER_ROW &&
-                (cells[position + 1].hasBomb() ||
-                cells[position + CELLS_PER_ROW].hasBomb());
-    }
-
+    
     private boolean shouldFillBomb(Random r) {
-        return (r.nextInt(16)) % 2 == 0;
+        return (r.nextInt(CELLS_TOTAL)) % 2 == 0;
     }
 }
-
-// https://www.youtube.com/watch?v=4X8U8RXhyk4
-

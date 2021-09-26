@@ -8,7 +8,7 @@ public class Cell {
     private final int id;
 
     private CellStatus cellStatus;
-    private int nearBombs = 0;
+    private int nearBombs;
 
     public Cell(boolean hasBomb, int id, int nearBombs) {
         this.hasBomb = hasBomb;
@@ -40,6 +40,8 @@ public class Cell {
     public void incNearBombs() {
         this.nearBombs = nearBombs + 1;
     }
+
+    public void clearNearBombsCounter() { this.nearBombs = 0; }
 
     public int getId() {
         return id;
