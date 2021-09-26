@@ -1,17 +1,15 @@
 package com.codeonblue.minesweeper.domain;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class Game {
 
     private static final int CELLS_TOTAL = 9;
     private static final int CELLS_PER_ROW = (int) Math.sqrt(CELLS_TOTAL);
 
-    public Cell[] getCells() {
-        return cells;
-    }
-
     private Cell[] cells = new Cell[CELLS_TOTAL];
+    private final UUID id = UUID.randomUUID();
 
     public Game() {
         fillBombs();
@@ -22,7 +20,12 @@ public class Game {
         this.cells = bombCells;
         fillAdjacentBombCells();
     }
-    
+
+    public Cell[] getCells() {
+        return cells;
+    }
+
+
     private void fillAdjacentBombCells() {
         for (int i = 0; i < CELLS_TOTAL; i++) {
             if (cells[i].hasBomb()) {
@@ -162,5 +165,9 @@ public class Game {
     
     private boolean shouldFillBomb(Random r) {
         return (r.nextInt(CELLS_TOTAL)) % 2 == 0;
+    }
+
+    public UUID getId() {
+        return id;
     }
 }
