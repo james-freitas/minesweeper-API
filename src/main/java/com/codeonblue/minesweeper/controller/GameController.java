@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 public class GameController {
 
@@ -36,11 +33,7 @@ public class GameController {
             @PathVariable String gameId,
             @PathVariable String cellId
     ) {
-        final Map<String, Integer> revealedCells = new HashMap<>();
-        revealedCells.put("1", 1);
-        final CellRevealedResponse cellRevealedResponse = new CellRevealedResponse();
-        cellRevealedResponse.setRevealedCells(revealedCells);
-        return new ResponseEntity<>(cellRevealedResponse, HttpStatus.OK);
+        return new ResponseEntity<>(gameService.getRevealedCells(gameId, cellId), HttpStatus.OK);
     }
 
     @PostMapping("/games/{gameId}/cells/{cellId}/mark")
