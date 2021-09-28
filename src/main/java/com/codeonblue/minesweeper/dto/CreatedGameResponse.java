@@ -1,16 +1,14 @@
 package com.codeonblue.minesweeper.dto;
 
-import java.util.UUID;
-
 public class CreatedGameResponse {
 
-    private final UUID gameId;
+    private final String gameId;
 
-    public CreatedGameResponse(UUID gameId) {
+    public CreatedGameResponse(String gameId) {
         this.gameId = gameId;
     }
 
-    public UUID getGameId() {
+    public String getGameId() {
         return gameId;
     }
 }

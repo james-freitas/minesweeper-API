@@ -5,14 +5,12 @@ import com.codeonblue.minesweeper.dto.CellStatus;
 public class Cell {
 
     private boolean hasBomb;
-    private final int id;
 
     private CellStatus cellStatus;
     private int nearBombs;
 
-    public Cell(boolean hasBomb, int id, int nearBombs) {
+    public Cell(boolean hasBomb, int nearBombs) {
         this.hasBomb = hasBomb;
-        this.id = id;
         this.cellStatus = CellStatus.UNCHECKED;
         this.nearBombs = nearBombs;
     }
@@ -42,8 +40,4 @@ public class Cell {
     }
 
     public void clearNearBombsCounter() { this.nearBombs = 0; }
-
-    public int getId() {
-        return id;
-    }
 }

@@ -1,8 +1,9 @@
 package com.codeonblue.minesweeper.service;
 
 import com.codeonblue.minesweeper.domain.Game;
-import com.codeonblue.minesweeper.dto.CellRevealedResponse;
+import com.codeonblue.minesweeper.dto.CellReveledResponse;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
+import com.codeonblue.minesweeper.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -11,16 +12,36 @@ import java.util.Map;
 @Service
 public class GameService {
 
+    private Map<String, Game> games = new HashMap<>();
+
     public CreatedGameResponse createGame() {
         final Game game = new Game();
+        games.put(game.getId(), game);
         return new CreatedGameResponse(game.getId());
     }
 
-    public CellRevealedResponse getRevealedCells(String gameId, String cellId) {
-        final Map<String, Integer> revealedCells = new HashMap<>();
-        revealedCells.put("1", 1);
-        final CellRevealedResponse cellRevealedResponse = new CellRevealedResponse();
-        cellRevealedResponse.setRevealedCells(revealedCells);
-        return cellRevealedResponse;
+    public CellReveledResponse getReveledCells(String gameId, String cellIdAsString) {
+
+        Map<String, String> reveledCells = new HashMap<>();
+
+        if (games.containsKey(gameId)) {
+            Game game = games.get(gameId);
+
+            try {
+                final Integer cellId = Integer.valueOf(cellIdAsString);
+                if (cellId < 0 || cellId > Game.CELLS_TOTAL - 1) {
+                    throw new ResourceNotFoundException("Cell was not found");
+                }
+                reveledCells = game.getReveledCells(cellId);
+            } catch (NumberFormatException ex) {
+                throw new ResourceNotFoundException("Cell was not found");
+            }
+
+        } else {
+            throw new ResourceNotFoundException("Game was not found");
+        }
+        final CellReveledResponse cellReveledResponse = new CellReveledResponse();
+        cellReveledResponse.setReveledCells(reveledCells);
+        return cellReveledResponse;
     }
 }

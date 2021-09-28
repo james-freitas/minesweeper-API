@@ -55,7 +55,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CellRevealedResponse"
+                $ref: "#/components/schemas/CellReveledResponse"
         405:
           description: Method not allowed error
           content:
@@ -118,23 +118,23 @@ components:
           type: string
           description: Current cell status
           example: "FLAGGED"
-    CellRevealedResponse:
+    CellReveledResponse:
       type: object
       properties:
         revealedCells:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/RevealedCells'
+            $ref: '#/components/schemas/ReveledCells'
           example:
-            10: 1
-            33: 4
-    RevealedCells:
+            10: "1"
+            33: "4"
+    ReveledCells:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         value:
-          type: integer
+          type: string
     CreatedGameResponse:
       type: object
       properties:

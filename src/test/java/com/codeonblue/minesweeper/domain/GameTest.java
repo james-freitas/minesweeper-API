@@ -36,26 +36,26 @@ class GameTest {
       1    1    1
     */
         Cell[] expectedCells = new Cell[9];
-        expectedCells[0] = new Cell(false, 0, 2);
-        expectedCells[1] = new Cell(true, 1, 0);
-        expectedCells[2] = new Cell(true, 2, 0);
-        expectedCells[3] = new Cell(false, 3, 2);
-        expectedCells[4] = new Cell(true, 4, 0);
-        expectedCells[5] = new Cell(false, 5, 3);
-        expectedCells[6] = new Cell(false, 6, 1);
-        expectedCells[7] = new Cell(false, 7, 1);
-        expectedCells[8] = new Cell(false, 8, 1);
+        expectedCells[0] = new Cell(false, 2);
+        expectedCells[1] = new Cell(true, 0);
+        expectedCells[2] = new Cell(true, 0);
+        expectedCells[3] = new Cell(false, 2);
+        expectedCells[4] = new Cell(true, 0);
+        expectedCells[5] = new Cell(false, 3);
+        expectedCells[6] = new Cell(false, 1);
+        expectedCells[7] = new Cell(false, 1);
+        expectedCells[8] = new Cell(false, 1);
 
         Cell[] inputCells = new Cell[9];
-        inputCells[0] = new Cell(false, 0, 0);
-        inputCells[1] = new Cell(true, 1, 0);
-        inputCells[2] = new Cell(true, 2, 0);
-        inputCells[3] = new Cell(false, 3, 0);
-        inputCells[4] = new Cell(true, 4, 0);
-        inputCells[5] = new Cell(false, 5, 0);
-        inputCells[6] = new Cell(false, 6, 0);
-        inputCells[7] = new Cell(false, 7, 0);
-        inputCells[8] = new Cell(false, 8, 0);
+        inputCells[0] = new Cell(false, 0);
+        inputCells[1] = new Cell(true, 0);
+        inputCells[2] = new Cell(true, 0);
+        inputCells[3] = new Cell(false, 0);
+        inputCells[4] = new Cell(true, 0);
+        inputCells[5] = new Cell(false, 0);
+        inputCells[6] = new Cell(false, 0);
+        inputCells[7] = new Cell(false, 0);
+        inputCells[8] = new Cell(false, 0);
 
         final Game game = new Game(inputCells);
         assertThat(game.getCells()[0].getNearBombs()).isEqualTo(expectedCells[0].getNearBombs());

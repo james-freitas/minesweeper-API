@@ -1,15 +1,17 @@
 package com.codeonblue.minesweeper.domain;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
 public class Game {
 
-    private static final int CELLS_TOTAL = 9;
+    public static final int CELLS_TOTAL = 9;
     private static final int CELLS_PER_ROW = (int) Math.sqrt(CELLS_TOTAL);
 
     private Cell[] cells = new Cell[CELLS_TOTAL];
-    private final UUID id = UUID.randomUUID();
+    private final String id = UUID.randomUUID().toString();
 
     public Game() {
         fillBombs();
@@ -151,12 +153,16 @@ public class Game {
         
         for (int i = 0; i < CELLS_TOTAL; i++) {
             if (shouldFillBomb(random) && bombsAdded < CELLS_PER_ROW) {
-                cells[i] = new Cell(true, i, 0);
+                cells[i] = new Cell(true, 0);
                 bombsAdded++;
             } else {
-                cells[i] = new Cell(false, i, 0);
+                cells[i] = new Cell(false, 0);
             }
         }
+    }
+
+    public Map<String,String> getReveledCells(int cellId) {
+        return new HashMap<>();
     }
 
     private boolean isBottomRow(int position) {
@@ -176,10 +182,10 @@ public class Game {
     }
     
     private boolean shouldFillBomb(Random r) {
-        return (r.nextInt(CELLS_TOTAL)) % 2 == 0;
+        return (r.nextInt(CELLS_TOTAL)) % CELLS_PER_ROW == 0;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 }

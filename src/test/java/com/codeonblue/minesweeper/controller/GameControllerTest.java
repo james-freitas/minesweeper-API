@@ -1,7 +1,7 @@
 package com.codeonblue.minesweeper.controller;
 
 
-import com.codeonblue.minesweeper.dto.CellRevealedResponse;
+import com.codeonblue.minesweeper.dto.CellReveledResponse;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
 import com.codeonblue.minesweeper.dto.MarkCellRequest;
 import com.codeonblue.minesweeper.service.GameService;
@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.mockito.BDDMockito.given;
@@ -44,7 +45,7 @@ class GameControllerTest {
     @DisplayName("Should create a game and return the game id")
     void shouldCreateMineSweeperGameAndReturnGameId() throws Exception {
 
-        final CreatedGameResponse createdGameResponse = new CreatedGameResponse(UUID.randomUUID());
+        final CreatedGameResponse createdGameResponse = new CreatedGameResponse(UUID.randomUUID().toString());
 
         given(gameService.createGame()).willReturn(createdGameResponse);
 
@@ -58,22 +59,52 @@ class GameControllerTest {
     }
 
     @Test
-    @DisplayName("Should return revealed cells in an existent game")
-    void shouldReturnAllRevealedCells() throws Exception {
+    @DisplayName("Should fail to return reveled cells when game does not exist")
+    void shouldFailToReturnReveledCellsOnNonExistentGame() throws Exception {
 
-        final CellRevealedResponse revealedResponse = generateCellRevealedResponse();
+        final CellReveledResponse revealedResponse = generateCellRevealedResponse();
+        final String gameId = "notFound";
+        final String cellId = "1";
+        final String url = "/games/" + gameId + "/cells/" + cellId + "/reveal";
 
-        mockMvc.perform(post("/games/3160c9de-b152-4886-ae52-41f670c493e9/cells/1/reveal")
+        given(gameService.getReveledCells(gameId, cellId)).willReturn(revealedResponse);
+
+        mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.revealedCells").isNotEmpty());
+
+        verify(gameService, times(1)).getReveledCells(gameId, cellId);
     }
 
-    private CellRevealedResponse generateCellRevealedResponse() {
-        final CellRevealedResponse cellRevealedResponse = new CellRevealedResponse();
-        cellRevealedResponse.setRevealedCells(new HashMap<>());
-        return cellRevealedResponse;
+
+//    @Test
+//    @DisplayName("Should return revealed cells in an existent game")
+//    void shouldReturnAllRevealedCells() throws Exception {
+//
+//        final CellReveledResponse revealedResponse = generateCellRevealedResponse();
+//        final String gameId = "3160c9de-b152-4886-ae52-41f670c493e9";
+//        final String cellId = "1";
+//        final String url = "/games/" + gameId + "/cells/" + cellId + "/reveal";
+//
+//        given(gameService.getReveledCells(gameId, cellId)).willReturn(revealedResponse);
+//
+//        mockMvc.perform(post(url)
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.revealedCells").isNotEmpty());
+//
+//        verify(gameService, times(1)).getReveledCells(gameId, cellId);
+//    }
+
+    private CellReveledResponse generateCellRevealedResponse() {
+        final Map<String, String> revealedCells = new HashMap<>();
+        revealedCells.put("1", "1");
+        final CellReveledResponse cellReveledResponse = new CellReveledResponse();
+        cellReveledResponse.setReveledCells(revealedCells);
+        return cellReveledResponse;
     }
 
     @Test

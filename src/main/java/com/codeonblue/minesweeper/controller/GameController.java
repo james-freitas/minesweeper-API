@@ -1,6 +1,6 @@
 package com.codeonblue.minesweeper.controller;
 
-import com.codeonblue.minesweeper.dto.CellRevealedResponse;
+import com.codeonblue.minesweeper.dto.CellReveledResponse;
 import com.codeonblue.minesweeper.dto.CellStatus;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
 import com.codeonblue.minesweeper.dto.MarkCellRequest;
@@ -29,11 +29,11 @@ public class GameController {
     }
 
     @PostMapping("/games/{gameId}/cells/{cellId}/reveal")
-    public ResponseEntity<CellRevealedResponse> getRevealedCells(
+    public ResponseEntity<CellReveledResponse> getRevealedCells(
             @PathVariable String gameId,
             @PathVariable String cellId
     ) {
-        return new ResponseEntity<>(gameService.getRevealedCells(gameId, cellId), HttpStatus.OK);
+        return new ResponseEntity<>(gameService.getReveledCells(gameId, cellId), HttpStatus.OK);
     }
 
     @PostMapping("/games/{gameId}/cells/{cellId}/mark")
