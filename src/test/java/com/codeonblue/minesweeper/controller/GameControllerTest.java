@@ -73,31 +73,30 @@ class GameControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.revealedCells").isNotEmpty());
+                .andExpect(jsonPath("$.reveledCells").isNotEmpty());
 
         verify(gameService, times(1)).getReveledCells(gameId, cellId);
     }
 
+    @Test
+    @DisplayName("Should return revealed cells in an existent game")
+    void shouldReturnAllRevealedCells() throws Exception {
 
-//    @Test
-//    @DisplayName("Should return revealed cells in an existent game")
-//    void shouldReturnAllRevealedCells() throws Exception {
-//
-//        final CellReveledResponse revealedResponse = generateCellRevealedResponse();
-//        final String gameId = "3160c9de-b152-4886-ae52-41f670c493e9";
-//        final String cellId = "1";
-//        final String url = "/games/" + gameId + "/cells/" + cellId + "/reveal";
-//
-//        given(gameService.getReveledCells(gameId, cellId)).willReturn(revealedResponse);
-//
-//        mockMvc.perform(post(url)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.revealedCells").isNotEmpty());
-//
-//        verify(gameService, times(1)).getReveledCells(gameId, cellId);
-//    }
+        final CellReveledResponse revealedResponse = generateCellRevealedResponse();
+        final String gameId = "3160c9de-b152-4886-ae52-41f670c493e9";
+        final String cellId = "1";
+        final String url = "/games/" + gameId + "/cells/" + cellId + "/reveal";
+
+        given(gameService.getReveledCells(gameId, cellId)).willReturn(revealedResponse);
+
+        mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.reveledCells").isNotEmpty());
+
+        verify(gameService, times(1)).getReveledCells(gameId, cellId);
+    }
 
     private CellReveledResponse generateCellRevealedResponse() {
         final Map<String, String> revealedCells = new HashMap<>();

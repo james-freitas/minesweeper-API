@@ -22,13 +22,13 @@ public class GameService {
 
     public CellReveledResponse getReveledCells(String gameId, String cellIdAsString) {
 
-        Map<String, String> reveledCells = new HashMap<>();
+        Map<String, String> reveledCells;
 
         if (games.containsKey(gameId)) {
             Game game = games.get(gameId);
 
             try {
-                final Integer cellId = Integer.valueOf(cellIdAsString);
+                final int cellId = Integer.parseInt(cellIdAsString);
                 if (cellId < 0 || cellId > Game.CELLS_TOTAL - 1) {
                     throw new ResourceNotFoundException("Cell was not found");
                 }

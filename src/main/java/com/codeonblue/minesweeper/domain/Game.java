@@ -1,9 +1,11 @@
 package com.codeonblue.minesweeper.domain;
 
-import java.util.HashMap;
+import com.codeonblue.minesweeper.dto.CellStatus;
+
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
 
@@ -161,9 +163,85 @@ public class Game {
         }
     }
 
+  /*
+    0  0  0
+    2  3  2
+    x  x  x
+
+    0  1  2
+    3  4  5
+    6  7  8
+
+    2  x  2  x
+    2  x  2  x
+    1  1  1  1
+    0  0  0  0
+
+    */
+
     public Map<String,String> getReveledCells(int cellId) {
-        return new HashMap<>();
+        Map<String, String> revealedCells = new ConcurrentHashMap<>();
+
+        if (cells[cellId].getCellStatus() == CellStatus.CHECKED) {
+            return revealedCells;
+        }
+
+        cells[cellId].setCellStatus(CellStatus.CHECKED);
+        revealedCells.put(String.valueOf(cellId), String.valueOf(cells[cellId].getNearBombs()));
+
+        if (cells[cellId].hasBomb()) {
+            return revealedCells;
+        }
+
+        return checkAdjacentCells(cellId, revealedCells);
     }
+
+    private Map<String, String> checkAdjacentCells(int cellId, Map<String, String> revealedCells) {
+
+        int counter = cellId;
+
+        while (!isLeftCol(counter)) {
+            counter--;
+            if (!cells[counter].hasBomb()) {
+                cells[counter].setCellStatus(CellStatus.CHECKED);
+
+                revealedCells.put(String.valueOf(counter),
+                        String.valueOf(cells[counter].getNearBombs()));
+
+                if (!isUpperRow(counter)) {
+                    checkAdjacentCells(counter - CELLS_PER_ROW, revealedCells);
+                }
+            } else {
+                break;
+            }
+        }
+
+        counter = cellId;
+
+        while (!isRightCol(counter)) {
+            counter++;
+            if (!cells[counter].hasBomb()) {
+                cells[counter].setCellStatus(CellStatus.CHECKED);
+
+                revealedCells.put(String.valueOf(counter),
+                        String.valueOf(cells[counter].getNearBombs()));
+
+                if (!isBottomRow(counter)) {
+                    checkAdjacentCells(counter + CELLS_PER_ROW, revealedCells);
+                }
+            } else {
+                break;
+            }
+        }
+        return revealedCells;
+    }
+
+    /*
+    0 1 2
+    3 4 5
+    6 7 8
+
+     */
 
     private boolean isBottomRow(int position) {
         return CELLS_TOTAL - position <= CELLS_PER_ROW;
@@ -182,7 +260,7 @@ public class Game {
     }
     
     private boolean shouldFillBomb(Random r) {
-        return (r.nextInt(CELLS_TOTAL)) % CELLS_PER_ROW == 0;
+        return Math.random() < 0.33;
     }
 
     public String getId() {
