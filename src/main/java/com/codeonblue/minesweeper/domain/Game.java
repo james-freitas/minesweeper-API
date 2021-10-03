@@ -164,22 +164,6 @@ public class Game {
         }
     }
 
-  /*
-    0  0  0
-    2  3  2
-    x  x  x
-
-    0  1  2
-    3  4  5
-    6  7  8
-
-    2  x  2  x
-    2  x  2  x
-    1  1  1  1
-    0  0  0  0
-
-    */
-
     public Map<String,String> getReveledCells(int cellId) {
         Map<String, String> revealedCells = new ConcurrentHashMap<>();
 
@@ -233,13 +217,6 @@ public class Game {
         }
         return revealedCells;
     }
-
-    /*
-    0 1 2
-    3 4 5
-    6 7 8
-
-     */
 
     private boolean isBottomRow(int position) {
         return CELLS_TOTAL - position <= CELLS_PER_ROW;
