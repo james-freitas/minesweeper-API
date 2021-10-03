@@ -257,7 +257,7 @@ public class Game {
     }
     
     private boolean shouldFillBomb(Random r) {
-        return Math.random() < 0.33;
+        return Math.random() < 0.45;
     }
 
     public String getId() {

@@ -1,5 +1,6 @@
 package com.codeonblue.minesweeper.domain;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -16,6 +17,7 @@ class GameTest {
     }
 
     @Test
+    @DisplayName("Should create a game using all bombs supported")
     void shouldCreateGameUsingAllBombsSupported() {
         final Game game = new Game();
         int bombs = 0;
