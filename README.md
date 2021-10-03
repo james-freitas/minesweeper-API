@@ -6,7 +6,8 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
 ## Features
  - API documented using Swagger
    - Access locally at http://localhost:8080 or in Heroku at https://minesweep-api.herokuapp.com/
- - API client library for the API can be found at: [Minesweeper client](https://github.com/james-freitas/minesweeper-lib)
+ - API client library for the API can be found at: [Minesweeper lib](https://github.com/james-freitas/minesweeper-lib)
+   - You can test the API library in this Kotlin repository: [Minesweeper client](https://github.com/james-freitas/minesweeper-client)
  - When a cell with no adjacent mines is revealed, all adjacent squares will be revealed (and repeat)
  - Ability to 'flag' a cell with a question mark or red flag
  - Detect when game is over
