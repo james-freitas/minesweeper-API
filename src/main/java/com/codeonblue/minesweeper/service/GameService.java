@@ -64,6 +64,10 @@ public class GameService {
                 return new MarkCellResponse(game.getCells()[cellId].getCellStatus());
             }
 
+            if (game.getStatus() != GameStatus.GAME_IN_PROGRESS) {
+                return new MarkCellResponse(CellStatus.CHECKED);
+            }
+
             switch (currentCellStatus) {
                 case "UNCHECKED": game.getCells()[cellId].setCellStatus(CellStatus.FLAGGED);
                     break;
