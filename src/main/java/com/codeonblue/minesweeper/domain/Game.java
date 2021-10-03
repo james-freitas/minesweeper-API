@@ -186,9 +186,6 @@ public class Game {
             return revealedCells;
         }
 
-        cells[cellId].setCellStatus(CellStatus.CHECKED);
-        revealedCells.put(String.valueOf(cellId), String.valueOf(cells[cellId].getNearBombs()));
-
         if (cells[cellId].hasBomb()) {
             return revealedCells;
         }
@@ -201,7 +198,6 @@ public class Game {
         int counter = cellId;
 
         while (!isLeftCol(counter)) {
-            counter--;
             if (!cells[counter].hasBomb()) {
                 cells[counter].setCellStatus(CellStatus.CHECKED);
 
@@ -214,12 +210,12 @@ public class Game {
             } else {
                 break;
             }
+            counter--;
         }
 
-        counter = cellId;
+        counter = cellId + 1;
 
         while (!isRightCol(counter)) {
-            counter++;
             if (!cells[counter].hasBomb()) {
                 cells[counter].setCellStatus(CellStatus.CHECKED);
 
@@ -232,6 +228,7 @@ public class Game {
             } else {
                 break;
             }
+            counter++;
         }
         return revealedCells;
     }

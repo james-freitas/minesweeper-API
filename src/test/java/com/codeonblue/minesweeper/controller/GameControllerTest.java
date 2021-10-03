@@ -2,8 +2,9 @@ package com.codeonblue.minesweeper.controller;
 
 
 import com.codeonblue.minesweeper.dto.CellReveledResponse;
+import com.codeonblue.minesweeper.dto.CellStatus;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
-import com.codeonblue.minesweeper.dto.MarkCellRequest;
+import com.codeonblue.minesweeper.dto.MarkCellResponse;
 import com.codeonblue.minesweeper.service.GameService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -110,13 +111,14 @@ class GameControllerTest {
     @DisplayName("Should mark cell as FLAGGED when current status is UNCHECKED in existent game")
     void shouldMarkCellAsFlagged() throws Exception {
 
-        final MarkCellRequest markCellRequest = new MarkCellRequest("UNCHECKED");
+        final String gameId = "3160c9de-b152-4886-ae52-41f670c493e9";
+        final String cellId = "1";
 
-        final String cellStatusInput = objectMapper.writeValueAsString(markCellRequest);
+        final MarkCellResponse markCellResponse = new MarkCellResponse(CellStatus.FLAGGED);
 
-        mockMvc.perform(post("/games/3160c9de-b152-4886-ae52-41f670c493e9/cells/1/mark")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(cellStatusInput))
+        given(gameService.markCellAndReturnResponse(gameId, cellId)).willReturn(markCellResponse);
+
+        mockMvc.perform(post("/games/3160c9de-b152-4886-ae52-41f670c493e9/cells/1/mark"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.cellCurrentStatus").isNotEmpty())
@@ -127,13 +129,14 @@ class GameControllerTest {
     @DisplayName("Should mark cell as QUESTION_MARK when current status is FLAGGED in existent game")
     void shouldMarkCellAsQuestionMark() throws Exception {
 
-        final MarkCellRequest markCellRequest = new MarkCellRequest("FLAGGED");
+        final String gameId = "3160c9de-b152-4886-ae52-41f670c493e9";
+        final String cellId = "1";
 
-        final String cellStatusInput = objectMapper.writeValueAsString(markCellRequest);
+        final MarkCellResponse markCellResponse = new MarkCellResponse(CellStatus.QUESTION_MARK);
 
-        mockMvc.perform(post("/games/3160c9de-b152-4886-ae52-41f670c493e9/cells/1/mark")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(cellStatusInput))
+        given(gameService.markCellAndReturnResponse(gameId, cellId)).willReturn(markCellResponse);
+
+        mockMvc.perform(post("/games/3160c9de-b152-4886-ae52-41f670c493e9/cells/1/mark"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.cellCurrentStatus").isNotEmpty())
@@ -144,13 +147,14 @@ class GameControllerTest {
     @DisplayName("Should mark cell as UNCHECKED when current status is QUESTION_MARK in existent game")
     void shouldMarkCellAsUnchecked() throws Exception {
 
-        final MarkCellRequest markCellRequest = new MarkCellRequest("QUESTION_MARK");
+        final String gameId = "3160c9de-b152-4886-ae52-41f670c493e9";
+        final String cellId = "1";
 
-        final String cellStatusInput = objectMapper.writeValueAsString(markCellRequest);
+        final MarkCellResponse markCellResponse = new MarkCellResponse(CellStatus.UNCHECKED);
 
-        mockMvc.perform(post("/games/3160c9de-b152-4886-ae52-41f670c493e9/cells/1/mark")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(cellStatusInput))
+        given(gameService.markCellAndReturnResponse(gameId, cellId)).willReturn(markCellResponse);
+
+        mockMvc.perform(post("/games/3160c9de-b152-4886-ae52-41f670c493e9/cells/1/mark"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.cellCurrentStatus").isNotEmpty())

@@ -1,11 +1,14 @@
 package com.codeonblue.minesweeper.service;
 
 import com.codeonblue.minesweeper.dto.CellReveledResponse;
+import com.codeonblue.minesweeper.dto.CellStatus;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
+import com.codeonblue.minesweeper.dto.MarkCellResponse;
 import com.codeonblue.minesweeper.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -70,5 +73,34 @@ class GameServiceTest {
         final String cellId = "invalidCell";
 
         assertThrows(ResourceNotFoundException.class, () -> gameService.getReveledCells(gameId, cellId));
+    }
+
+
+    @Test
+    @DisplayName("Should mark a cell and return its new status")
+    void shouldMarkAndReturnNewCellStatus() {
+
+        final GameService gameService = new GameService();
+        final CreatedGameResponse game = gameService.createGame();
+
+        final String gameId = game.getGameId();
+        final String cellId = "1";
+
+        final MarkCellResponse markCellResponse = gameService.markCellAndReturnResponse(gameId, cellId);
+
+        assertNotNull(markCellResponse);
+        assertThat(markCellResponse.getCellCurrentStatus()).isEqualTo(CellStatus.FLAGGED);
+    }
+
+    @Test
+    @DisplayName("Should fail to mark a cell and return its status when non existing gameId is given")
+    void shouldFailToMarkAndReturnCellStatusForNonExistentGame() {
+
+        final GameService gameService = new GameService();
+
+        final String gameId = "non existent game";
+        final String cellId = "1";
+
+        assertThrows(ResourceNotFoundException.class, () -> gameService.markCellAndReturnResponse(gameId, cellId));
     }
 }
