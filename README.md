@@ -25,7 +25,7 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
  - API documented using Swagger
  - Implemented Continuous Delivery using Heroku
 
-## Local Manual testing
+## Run the application manually and testing
 Build the application
 
 ```bash
