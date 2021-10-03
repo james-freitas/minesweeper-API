@@ -14,6 +14,7 @@ public class Game {
 
     private Cell[] cells = new Cell[CELLS_TOTAL];
     private final String id = UUID.randomUUID().toString();
+    private GameStatus status = GameStatus.GAME_IN_PROGRESS;
 
     public Game() {
         fillBombs();
@@ -262,5 +263,13 @@ public class Game {
 
     public String getId() {
         return id;
+    }
+
+    public GameStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(GameStatus status) {
+        this.status = status;
     }
 }

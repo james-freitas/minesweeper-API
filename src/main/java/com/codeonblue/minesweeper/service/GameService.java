@@ -1,6 +1,7 @@
 package com.codeonblue.minesweeper.service;
 
 import com.codeonblue.minesweeper.domain.Game;
+import com.codeonblue.minesweeper.domain.GameStatus;
 import com.codeonblue.minesweeper.dto.CellReveledResponse;
 import com.codeonblue.minesweeper.dto.CellStatus;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class GameService {
@@ -31,16 +33,22 @@ public class GameService {
             Game game = games.get(gameId);
 
             final int cellId = validateAndConvert(cellIdAsString);
+            final CellReveledResponse cellReveledResponse = new CellReveledResponse();
 
-            reveledCells = game.getReveledCells(cellId);
+            if (game.getCells()[cellId].hasBomb()) {
+                game.setStatus(GameStatus.GAME_OVER_PLAYER_LOSES);
+                reveledCells = new ConcurrentHashMap<>();
+            } else {
+                reveledCells = game.getReveledCells(cellId);
+            }
+
+            cellReveledResponse.setReveledCells(reveledCells);
+            cellReveledResponse.setGameStatus(game.getStatus());
+            return cellReveledResponse;
 
         } else {
             throw new ResourceNotFoundException("Game was not found");
         }
-
-        final CellReveledResponse cellReveledResponse = new CellReveledResponse();
-        cellReveledResponse.setReveledCells(reveledCells);
-        return cellReveledResponse;
     }
 
     public MarkCellResponse markCellAndReturnResponse(String gameId, String cellIdAsString) {

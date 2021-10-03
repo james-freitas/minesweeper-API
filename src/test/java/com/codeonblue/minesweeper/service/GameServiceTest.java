@@ -1,5 +1,6 @@
 package com.codeonblue.minesweeper.service;
 
+import com.codeonblue.minesweeper.domain.GameStatus;
 import com.codeonblue.minesweeper.dto.CellReveledResponse;
 import com.codeonblue.minesweeper.dto.CellStatus;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
@@ -8,9 +9,11 @@ import com.codeonblue.minesweeper.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.codeonblue.minesweeper.domain.Game.CELLS_TOTAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameServiceTest {
 
@@ -75,7 +78,6 @@ class GameServiceTest {
         assertThrows(ResourceNotFoundException.class, () -> gameService.getReveledCells(gameId, cellId));
     }
 
-
     @Test
     @DisplayName("Should mark a cell and return its new status")
     void shouldMarkAndReturnNewCellStatus() {
@@ -102,5 +104,41 @@ class GameServiceTest {
         final String cellId = "1";
 
         assertThrows(ResourceNotFoundException.class, () -> gameService.markCellAndReturnResponse(gameId, cellId));
+    }
+
+    @Test
+    @DisplayName("Should return reveled cells when the game is in progress")
+    void shouldReturnReveledCellsWhenGameIsInProgress() {
+
+        final GameService gameService = new GameService();
+        final CreatedGameResponse createdGameResponse = gameService.createGame();
+
+        final String gameId = createdGameResponse.getGameId();
+        final String cellId = "1";
+
+        final CellReveledResponse cellReveledResponse = gameService.getReveledCells(gameId, cellId);
+
+        assertNotNull(cellReveledResponse);
+        assertNotNull(cellReveledResponse.getGameStatus());
+    }
+
+    @Test
+    @DisplayName("Should return no reveled cells when the game is over")
+    void shouldReturnNoReveledCellsWhenGameOver() {
+
+        final GameService gameService = new GameService();
+        final CreatedGameResponse createdGameResponse = gameService.createGame();
+
+        final String gameId = createdGameResponse.getGameId();
+
+        CellReveledResponse cellReveledResponse = new CellReveledResponse();
+
+        for (int i = 0; i < CELLS_TOTAL - 1; i++) {
+            cellReveledResponse = gameService.getReveledCells(gameId, String.valueOf(i));
+        }
+
+        assertNotNull(cellReveledResponse);
+        assertThat(cellReveledResponse.getGameStatus()).isEqualTo(GameStatus.GAME_OVER_PLAYER_LOSES);
+        assertTrue(cellReveledResponse.getReveledCells().isEmpty());
     }
 }

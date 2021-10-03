@@ -1,6 +1,7 @@
 package com.codeonblue.minesweeper.controller;
 
 
+import com.codeonblue.minesweeper.domain.GameStatus;
 import com.codeonblue.minesweeper.dto.CellReveledResponse;
 import com.codeonblue.minesweeper.dto.CellStatus;
 import com.codeonblue.minesweeper.dto.CreatedGameResponse;
@@ -94,7 +95,8 @@ class GameControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.reveledCells").isNotEmpty());
+                .andExpect(jsonPath("$.reveledCells").isNotEmpty())
+                .andExpect(jsonPath("$.gameStatus").isNotEmpty());
 
         verify(gameService, times(1)).getReveledCells(gameId, cellId);
     }
@@ -104,6 +106,7 @@ class GameControllerTest {
         revealedCells.put("1", "1");
         final CellReveledResponse cellReveledResponse = new CellReveledResponse();
         cellReveledResponse.setReveledCells(revealedCells);
+        cellReveledResponse.setGameStatus(GameStatus.GAME_IN_PROGRESS);
         return cellReveledResponse;
     }
 
