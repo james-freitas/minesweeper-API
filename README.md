@@ -11,12 +11,6 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
  - Ability to 'flag' a cell with a question mark or red flag
  - Detect when game is over
  
-## Run application locally
- - Add the following environment variable
- ```bash
- APPLICATION_BASE_URL=http://localhost:8080
- ```
-
 ## Functional Decision
  - At this moment the game supports only a 9 square game (3 bombs)
  - It was chosen to store all the cells of a game in a uni dimensional array for each game
