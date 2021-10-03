@@ -133,6 +133,12 @@ components:
           example:
             10: "1"
             33: "4"
+        gameStatus:
+          type: string
+          enum:
+            - GAME_IN_PROGRESS
+            - GAME_OVER_PLAYER_LOSES
+            - GAME_OVER_PLAYER_WINS
     ReveledCells:
       type: object
       properties:

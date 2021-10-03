@@ -13,7 +13,18 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
  APPLICATION_BASE_URL=http://localhost:8080
  ```
 
-## Misc
+## Functional Decision
+ - At this moment the game supports only a 9 square game (3 bombs)
+ - It was chosen to store all the cells of a game in a uni dimensional array for each game
+ - The persistence is not implemented yet so the games are saved on memory inside a map
+ - To the reveal cells and their no bomb adjacent neighbors was used recursion 
+
+## Non Functional Decisions
+ - Stack chosen: Java, SpringBoot
+ - Pattern used: MVC
+ - Test stack: JUnit, Mockito
+ - API documented using Swagger
+ - Implemented Continuous Delivery using Heroku
  - A scheduler was added to health check the application on a 20-minute basis in order to avoid hibernation
 
 
