@@ -30,6 +30,9 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
  - API documented using Swagger
  - Implemented Continuous Delivery using Heroku
 
+## Manual testing
+ - After start the application you can use the postman collection on `src/main/postman` folder to test it using postman 
+
 ## Todo
 The following is a list of items prioritized from most important to least important:
 
