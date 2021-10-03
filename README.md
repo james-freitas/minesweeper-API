@@ -30,8 +30,26 @@ API for the classic game [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper
  - API documented using Swagger
  - Implemented Continuous Delivery using Heroku
 
-## Manual testing
- - After start the application you can use the postman collection on `src/main/postman` folder to test it using postman 
+## Local Manual testing
+Build the application
+
+```bash
+./gradlew build
+```
+
+Export the environment variable
+```bash
+export APPLICATION_BASE_URL=http://localhost:8080
+```
+ 
+Run the application
+
+```bash
+ java -jar build/libs/minesweeper-0.0.1-SNAPSHOT.jar
+```
+
+The application will start on port 8080 
+After start the application you can use the postman collection on `src/main/postman` folder to test it using postman 
 
 ## Todo
 The following is a list of items prioritized from most important to least important:
